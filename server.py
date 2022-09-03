@@ -3,7 +3,7 @@ import os
 import json
 
 HOST = 'coloca o ip do servidor' # Endereco IP do Servidor
-PORT = 5000 # Porta que o Servidor esta
+PORT = 5000 # Porta que o Servidor está
 
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (HOST, PORT)
@@ -15,21 +15,21 @@ con, cliente = tcp.accept()
 print ('Conectado por',cliente)
 
 length = int(con.recv(2).decode())
-imageDict = json.loads((con.recv(length)).decode('utf-8'))
+fileDict = json.loads((con.recv(length)).decode('utf-8'))
 
-print("size recebido = " + str(imageDict["size"]))
-print("nome recebido = " + imageDict["nome"])
-print("extensão recebida = " + imageDict["ext"])
-
-
-imagem = open("imagem-server." + imageDict["ext"], "wb")
-
-imagem_quadro = con.recv(2048)
-while imagem_quadro:
-    imagem.write(imagem_quadro)
-    imagem_quadro = con.recv(2048)
+print("size recebido = " + str(fileDict["size"]))
+print("nome recebido = " + fileDict["nome"])
+print("extensão recebida = " + fileDict["ext"])
 
 
-imagem.close()
+file = open(fileDict["nome"] + '-server.' + fileDict["ext"], "wb")
+
+file_quadro = con.recv(2048)
+while file_quadro:
+    file.write(file_quadro)
+    file_quadro = con.recv(2048)
+
+
+file.close()
 con.close()
-input('Press ENTER to exit')
+input('Pressione ENTER para sair')

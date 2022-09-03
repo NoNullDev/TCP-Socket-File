@@ -3,41 +3,42 @@ import os
 import json
 
 HOST = 'coloca o ip do servidor' # Endereco IP do Servidor
-PORT = 5000 # Porta que o Servidor está
+PORT = 5000 # Porta que o Servidor esta
 
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 dest = (HOST, PORT)
 
+file_fullname = input("Digite o nome do arquivo: ")
+
 tcp.connect(dest)
 
-image_fullname = 'imagem-cliente.png' 
-image_ext = image_fullname.split('.')[1] # extensão
-image_name = image_fullname.split('.')[0] # nome sem extensão
-image_size = os.stat(image_fullname).st_size
+file_ext = file_fullname.split('.')[-1] # extensão
+file_name = file_fullname.split('.')[0] # nome sem extensão
+file_size = os.stat(file_fullname).st_size
 
-imageDict = {
-	"nome" : image_name,
-	"size" : image_size,
-	"ext" : image_ext
+fileDict = {
+	"nome" : file_name,
+	"size" : file_size,
+	"ext" : file_ext
 }
 
 #enviar dados da imagem pro servidor
-tcp.send(str(len(json.dumps(imageDict))).encode())
-tcp.send(json.dumps(imageDict).encode('utf-8'))
+tcp.send(str(len(json.dumps(fileDict))).encode())
+tcp.send(json.dumps(fileDict).encode('utf-8'))
 
-print("size enviado = " + str(image_size))
-print("nome enviado = " + image_name)
-print("extensão enviada = " + image_ext)
-
-
-imagem = open(image_fullname,"rb")
-imagem_quadro = imagem.read(2048)
-while imagem_quadro:
-     tcp.send(imagem_quadro)
-     imagem_quadro = imagem.read(2048)
+print("size enviado = " + str(file_size))
+print("nome enviado = " + file_name)
+print("extensão enviada = " + file_ext)
 
 
-imagem.close()
+file = open(file_fullname,"rb")
+file_quadro = file.read(2048)
+while file_quadro:
+     tcp.send(file_quadro)
+     file_quadro = file.read(2048)
+
+
+file.close()
 tcp.close()
-input('Press ENTER to exit')
+input('Pressione ENTER para sair')
