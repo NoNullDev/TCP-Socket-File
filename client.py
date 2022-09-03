@@ -3,7 +3,7 @@ import os
 import json
 
 HOST = 'coloca o ip do servidor' # Endereco IP do Servidor
-PORT = 5000 # Porta que o Servidor esta
+PORT = 5000 # Porta que o Servidor está
 
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -23,7 +23,7 @@ fileDict = {
 	"ext" : file_ext
 }
 
-#enviar dados da imagem pro servidor
+#enviar dados do arquivo pro servidor
 tcp.send(str(len(json.dumps(fileDict))).encode())
 tcp.send(json.dumps(fileDict).encode('utf-8'))
 
